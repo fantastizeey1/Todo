@@ -12,7 +12,30 @@
     <title>Todo app</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <script src="index.js"></script>
-  </body>
+  <div class="todo-app">
+    <header class="header">
+      <h1>TODO</h1>
+      <div class="toggle-theme">
+        <button id="theme-toggle">Toggle Theme</button>
+      </div>
+    </header>
+    <div class="new-todo">
+      <input type="text" id="new-todo-input" placeholder="Currently typing...">
+    </div>
+    <ul class="todo-list" id="todo-list">
+      <!-- Todos will be dynamically added here -->
+    </ul>
+    <footer class="footer">
+      <span id="items-left">0 items left</span>
+      <div class="filters">
+        <button id="all-filter">All</button>
+        <button id="active-filter">Active</button>
+        <button id="completed-filter">Completed</button>
+      </div>
+      <button id="clear-completed">Clear Completed</button>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
