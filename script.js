@@ -7,22 +7,23 @@ let todos = [];
 
 function isBefore(el1, el2) {
   for (
-    var cur = el1.previousSibling;
+    let cur = el1.previousSibling;
     cur && cur.nodeType !== 9;
     cur = cur.previousSibling
-  )
+  ) {
     if (cur === el2) return true;
+  }
   return false;
 }
 
 todoInput.addEventListener("keyup", function (e) {
   if (e.key === "Enter" || e.keyCode === 13) {
-    const todoValue = e.target.value.trim(); // Trim input to avoid empty strings
+    const todoValue = e.target.value.trim();
     if (todoValue) {
       todos.push({ value: todoValue, checked: false });
       newTodo(todoValue);
       todoInput.value = "";
-      updateCount(); // Update count after adding a new todo
+      updateCount();
     }
   }
 });
@@ -37,7 +38,7 @@ function newTodo(value) {
   const index = todos.findIndex((t) => t.value === value);
   const obj = todos[index];
 
-  const uniqueId = `checkbox-${Date.now()}`; // Generate a unique id for the checkbox
+  const uniqueId = `checkbox-${Date.now()}`;
   todoText.textContent = value;
   todoCheckBox.type = "checkbox";
   todoCheckBox.id = uniqueId;
@@ -108,6 +109,7 @@ function newTodo(value) {
       updatedTodos.push({ value: text, checked: isChecked });
     });
     todos = updatedTodos;
+    updateCount();
   });
 
   todosContainer.appendChild(todo);
@@ -115,6 +117,8 @@ function newTodo(value) {
 
 function updateCount() {
   const activeCount = todos.filter((t) => !t.checked).length;
+  console.log("Todos:", todos); // Debugging line
+  console.log("Active Count:", activeCount); // Debugging line
   completedCountElement.textContent = `${activeCount} items left`;
 }
 
