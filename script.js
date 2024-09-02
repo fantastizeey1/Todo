@@ -1,9 +1,19 @@
-// script.js
 const todoInput = document.querySelector("#todo-input");
 const todosContainer = document.querySelector("#todos-container");
-const completedCountElement = document.querySelector("#completed-count"); // Correct element reference
+const completedCountElement = document.querySelector("#completed-count");
 
+let elem = null;
 let todos = [];
+
+function isBefore(el1, el2) {
+  for (
+    var cur = el1.previousSibling;
+    cur && cur.nodeType !== 9;
+    cur = cur.previousSibling
+  )
+    if (cur === el2) return true;
+  return false;
+}
 
 todoInput.addEventListener("keyup", function (e) {
   if (e.key === "Enter" || e.keyCode === 13) {
@@ -25,25 +35,24 @@ function newTodo(value) {
   const todoCross = document.createElement("span");
 
   const index = todos.findIndex((t) => t.value === value);
-  const obj = todos[index]; // Get the correct todo object
+  const obj = todos[index];
 
   const uniqueId = `checkbox-${Date.now()}`; // Generate a unique id for the checkbox
   todoText.textContent = value;
   todoCheckBox.type = "checkbox";
-  todoCheckBox.id = uniqueId; // Assign the unique id
+  todoCheckBox.id = uniqueId;
   todoCheckBox.style.cursor = "pointer";
-  todoCheckBoxLabel.htmlFor = uniqueId; // Associate label with the unique id
+  todoCheckBoxLabel.htmlFor = uniqueId;
 
-  // Set initial checkbox state
   todoCheckBox.checked = obj.checked;
   todoText.style.textDecoration = obj.checked ? "line-through" : "none";
   if (obj.checked) todoCheckBoxLabel.classList.add("active");
 
   todoCheckBox.addEventListener("change", function () {
-    obj.checked = todoCheckBox.checked; // Update the todo checked state in the array
+    obj.checked = todoCheckBox.checked;
     todoText.style.textDecoration = obj.checked ? "line-through" : "none";
     todoCheckBoxLabel.classList.toggle("active", obj.checked);
-    updateCount(); // Update count whenever a checkbox state changes
+    updateCount();
   });
 
   todoCross.textContent = "✖";
@@ -52,7 +61,7 @@ function newTodo(value) {
     const indexToRemove = todos.findIndex((t) => t.value === value);
     if (indexToRemove > -1) {
       todos.splice(indexToRemove, 1);
-      updateCount(); // Update count after removing a todo
+      updateCount();
     }
     e.target.parentElement.remove();
   });
@@ -66,16 +75,49 @@ function newTodo(value) {
   todo.appendChild(todoText);
   todo.appendChild(todoCross);
 
+  // Drag-and-Drop functionality
+  todo.draggable = true;
+  todo.addEventListener("dragstart", (e) => {
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", null);
+    elem = e.target;
+  });
+
+  todo.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const el1 = e.target.classList.contains("todo")
+      ? e.target
+      : e.target.closest(".todo");
+    if (el1 && el1 !== elem) {
+      if (isBefore(elem, el1)) {
+        el1.parentNode.insertBefore(elem, el1);
+      } else {
+        el1.parentNode.insertBefore(elem, el1.nextSibling);
+      }
+    }
+  });
+
+  todo.addEventListener("dragend", () => {
+    elem = null;
+
+    // Update the todos array to reflect the new order
+    const updatedTodos = [];
+    document.querySelectorAll(".todo").forEach((todoElement) => {
+      const text = todoElement.querySelector("p").textContent;
+      const isChecked = todoElement.querySelector("input").checked;
+      updatedTodos.push({ value: text, checked: isChecked });
+    });
+    todos = updatedTodos;
+  });
+
   todosContainer.appendChild(todo);
 }
 
-// Function to update the count of active items
 function updateCount() {
-  const activeCount = todos.filter((t) => !t.checked).length; // Count unchecked todos
-  completedCountElement.textContent = `${activeCount} items left`; // Update the display
+  const activeCount = todos.filter((t) => !t.checked).length;
+  completedCountElement.textContent = `${activeCount} items left`;
 }
 
-// Function to show all todos
 function showAll() {
   document.querySelectorAll(".filters div").forEach((d, i) => {
     d.classList.toggle("filterActive", i === 0);
@@ -85,7 +127,6 @@ function showAll() {
   });
 }
 
-// Function to filter and show only completed todos
 function filterCompleted() {
   document.querySelectorAll(".filters div").forEach((d, i) => {
     d.classList.toggle("filterActive", i === 2);
@@ -95,7 +136,6 @@ function filterCompleted() {
   });
 }
 
-// Function to filter and show only active todos
 function filterActive() {
   document.querySelectorAll(".filters div").forEach((d, i) => {
     d.classList.toggle("filterActive", i === 1);
@@ -105,15 +145,14 @@ function filterActive() {
   });
 }
 
-// Function to clear completed todos
 function clearCompleted() {
   document.querySelectorAll(".todo").forEach((todo) => {
     if (todo.querySelector("input").checked) {
       todo.remove();
     }
   });
-  todos = todos.filter((todo) => !todo.checked); // Clear completed todos from array
-  updateCount(); // Update count after clearing completed todos
+  todos = todos.filter((todo) => !todo.checked);
+  updateCount();
 }
 
 function changeTheme() {

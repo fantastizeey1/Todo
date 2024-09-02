@@ -1,4 +1,5 @@
-/* style.css */
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
 * {
   box-sizing: border-box;
   border: 0;
@@ -15,6 +16,7 @@ body {
   --tgl-btn: url("./images/icon-sun.svg");
   --bg-todo: hsl(235, 24%, 19%);
   color: var(--fg);
+  font-family: "Josefin Sans", sans-serif;
 }
 .light {
   --bg: hsl(236, 33%, 92%);
