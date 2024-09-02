@@ -17,7 +17,11 @@
     <main>
       <header>
         <h1>TODO</h1>
-        <div class="tgl-btn" onclick="changeTheme()"></div>
+        <div
+          class="tgl-btn"
+          onclick="changeTheme()"
+          style="cursor: pointer"
+        ></div>
       </header>
       <div class="type-todo">
         <div class="circle"></div>
@@ -25,12 +29,18 @@
       </div>
       <div class="todos" id="todos-container"></div>
       <div class="remarks">
-        <div class="completedCount"></div>
-        <div onclick="clearCompleted()">Clear Completed</div>
+        <div class="completedCount" id="completed-count"></div>
+        <div onclick="clearCompleted()" style="cursor: pointer">
+          Clear Completed
+        </div>
         <div class="filters">
-          <div>All</div>
-          <div>Active</div>
-          <div>Completed</div>
+          <div class="filterActive" style="cursor: pointer" onclick="showAll()">
+            All
+          </div>
+          <div onclick="filterActive()" style="cursor: pointer">Active</div>
+          <div onclick="filterCompleted()" style="cursor: pointer">
+            Completed
+          </div>
         </div>
       </div>
     </main>
