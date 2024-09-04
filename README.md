@@ -20,7 +20,7 @@ This is a simple Todo List application built with vanilla JavaScript. It allows 
    git clone https://github.com/fantastizeey1/Todo.git
    ```
 
-2. ** Link to the Design **:
+2. **Link to the Design FrontEnd Mentor Design**:
 
 ```
 https://www.frontendmentor.io/challenges/todo-app-Su1_KokOW
