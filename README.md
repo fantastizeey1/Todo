@@ -19,3 +19,9 @@ This is a simple Todo List application built with vanilla JavaScript. It allows 
    ```bash
    git clone https://github.com/fantastizeey1/Todo.git
    ```
+
+2. ** Link to the Design **:
+
+```
+https://www.frontendmentor.io/challenges/todo-app-Su1_KokOW
+```
